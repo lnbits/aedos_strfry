@@ -1,0 +1,33 @@
+services:
+  # Retain the service identity so existing Compose deployments upgrade in place.
+  aedos:
+    image: lnbits-nrm:local
+    build:
+      context: .
+      args:
+        BUILD_JOBS: ${BUILD_JOBS:-2}
+    restart: unless-stopped
+    stop_grace_period: 60s
+    environment:
+      AI_MODERATION_ENABLED: "${AI_MODERATION_ENABLED:-true}"
+      REQUIRE_EXISTING_DB: "${REQUIRE_EXISTING_DB:-false}"
+      ADMIN_NPUBS: ${ADMIN_NPUBS:-}
+      PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:-http://localhost:3000}
+      RELAY_URL: ${RELAY_URL:-ws://localhost:7777}
+      RELAY_NAME: ${RELAY_NAME:-LNbits NRM}
+      RELAY_DESCRIPTION: ${RELAY_DESCRIPTION:-LNbits Nostr Relay Manager}
+      RELAY_PUBKEY: ${RELAY_PUBKEY:-}
+      RELAY_CONTACT: ${RELAY_CONTACT:-}
+    ports:
+      - "${UI_BIND:-127.0.0.1}:${UI_PORT:-3000}:3000"
+      - "${RELAY_BIND:-0.0.0.0}:${RELAY_PORT:-7777}:7777"
+    volumes:
+      - aedos_data:/data
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+volumes:
+  # Retain the volume identity to reopen existing relay data.
+  aedos_data:

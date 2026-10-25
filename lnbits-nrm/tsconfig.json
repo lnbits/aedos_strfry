@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "noEmit": true, "resolveJsonModule": true,
+    "target": "ES2022", "module": "ESNext", "moduleResolution": "bundler",
+    "strict": true, "allowJs": true, "checkJs": false,
+    "isolatedModules": true, "verbatimModuleSyntax": true, "skipLibCheck": true
+  },
+  "include": ["web/**/*.ts", "web/**/*.svelte"]
+}

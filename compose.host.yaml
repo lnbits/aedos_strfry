@@ -1,0 +1,36 @@
+# Opt-in host storage. Select with COMPOSE_FILE in .env or both -f arguments.
+# The base Compose file remains compatible with existing named-volume installs.
+services:
+  aedos:
+    volumes:
+      - type: bind
+        source: ${NRM_DATA_DIR:-./data}
+        target: /data
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${STRFRY_DB_DIR:-./strfry-db}
+        target: /data/strfry-db
+        bind:
+          create_host_path: false
+
+  setup:
+    profiles: [setup]
+    image: lnbits-nrm:local
+    user: "0:0"
+    entrypoint: [node, /app/server/setup-storage.js]
+    network_mode: none
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [CHOWN, DAC_OVERRIDE, FOWNER, SETUID, SETGID]
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      REQUIRE_EXISTING_DB: "${REQUIRE_EXISTING_DB:-false}"
+    volumes:
+      - type: bind
+        source: ${NRM_DATA_DIR:-./data}
+        target: /setup/settings
+      - type: bind
+        source: ${STRFRY_DB_DIR:-./strfry-db}
+        target: /setup/database

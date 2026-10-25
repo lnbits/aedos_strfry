@@ -1,0 +1,37 @@
+# Local environment files may contain credentials. Keep the distributable example.
+.env
+.env.*
+!.env.example
+# Optional upstream strfry reference checkout; never vendor it in this repository.
+/strfry/
+**/node_modules/
+**/dist/
+**/data/
+**/strfry-db/
+**/*.mdb
+**/*.sqlite
+**/*.sqlite-*
+**/.svelte-kit/
+**/*.log
+**/test-results/
+
+# Database variants, sidecars and backups (including custom storage locations).
+**/*.lmdb
+**/*.lmdb-*
+**/*.lmdb.*
+**/*.mdb-*
+**/*.mdb.*
+**/*.sqlite.*
+**/*.sqlite3
+**/*.sqlite3-*
+**/*.sqlite3.*
+
+# Generated rules may contain private author/word lists.
+**/policy.json
+**/policy.json.next
+**/*.sock
+
+# Additional local test artifacts.
+**/playwright-report/
+**/blob-report/
+**/coverage/
